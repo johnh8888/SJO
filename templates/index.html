@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>V27 Quant RL Arbitrage System</title>
+
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .box {
+            background: #1e293b;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 320px;
+        }
+
+        .good { color: #22c55e; }
+        .bad { color: #ef4444; }
+        .warn { color: #facc15; }
+    </style>
+</head>
+
+<body>
+
+<h1>⚽ V27 RL + Arbitrage Quant System</h1>
+
+<div class="box">
+    <h3>xG</h3>
+    <div id="xg"></div>
+</div>
+
+<div class="box">
+    <h3>Odds</h3>
+    <pre id="odds"></pre>
+</div>
+
+<div class="box">
+    <h3>Edges</h3>
+    <pre id="edges"></pre>
+</div>
+
+<div class="box">
+    <h3>RL Action</h3>
+    <div id="rl"></div>
+</div>
+
+<div class="box">
+    <h3>Arbitrage</h3>
+    <div id="arb"></div>
+</div>
+
+<div class="box">
+    <h3>Bankroll</h3>
+    <div id="bankroll"></div>
+</div>
+
+<script>
+
+async function load(){
+
+    const res = await fetch("/data");
+    const d = await res.json();
+
+    document.getElementById("xg").innerText =
+        JSON.stringify(d.xg);
+
+    document.getElementById("odds").innerText =
+        JSON.stringify(d.odds, null, 2);
+
+    document.getElementById("edges").innerText =
+        JSON.stringify(d.edges, null, 2);
+
+    document.getElementById("rl").innerText =
+        d.rl_action;
+
+    document.getElementById("bankroll").innerText =
+        d.bankroll;
+
+    document.getElementById("arb").innerText =
+        d.arbitrage ? JSON.stringify(d.arbitrage) : "NO ARB";
+}
+
+setInterval(load, 1500);
+load();
+
+</script>
+
+</body>
+</html>
